@@ -1,10 +1,24 @@
 /* Spooky Theme CSS */
 
 body {
-    font-family: 'Comic Sans MS', cursive, sans-serif;  /* Curvy font for a spooky effect */
-    background-color: #000;  /* Black background */
-    color: #D1B3FF;  /* Light pastel purple text color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #000; /* Black background for spooky theme */
 }
+
+.section {
+    width: 180px;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.8); /* Translucent white for section background */
+    border: 1px solid #4B0082;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+
 
 #footer {
     height: 30px;
@@ -24,15 +38,17 @@ body {
 }
 
 #dhtmlgoodies_dragDropContainer {
-    width: 790px;
-    height: 770px;
-    border: 2px solid #4B0082;  /* Purple border */
-    background-color: #1A1A1A;  /* Dark gray to contrast with black */
-    background-image: url('skeleton.jpg');  /* Add skeleton background image */
-    background-size: cover;  /* Scale the image to cover the entire container */
-    background-position: center;  /* Center the image in the container */
-    background-repeat: no-repeat;  /* Ensure the image doesn’t repeat */
-    -moz-user-select: none;
+    width: 1000px; /* Increased width to fit all four sections in one line */
+    height: 600px; /* Adjusted height to match background image proportions */
+    border: 2px solid #4B0082; /* Purple border */
+    background-image: url('skeleton.jpg'); /* Use the correct .jpg extension */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
 }
 
 
@@ -119,9 +135,11 @@ div#dhtmlgoodies_listOfItems div ul { /* Left column <ul> */
 
 /* Start main container CSS */
 
-div#dhtmlgoodies_mainContainer { /* Right column DIV */
-    width: 590px;
-    float: left;
+
+#dhtmlgoodies_mainContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
 }
 
 #dhtmlgoodies_mainContainer div { /* Parent <div> of small boxes */
@@ -138,6 +156,8 @@ div#dhtmlgoodies_mainContainer { /* Right column DIV */
     width/* */:/**/170px; /* Other browsers */
     width: /**/170px;
 }
+
+
 
 #dhtmlgoodies_mainContainer div ul {
     margin-left: 10px;
