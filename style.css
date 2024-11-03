@@ -6,19 +6,10 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: #000; /* Black background for spooky theme */
+    font-family: 'Comic Sans MS', cursive, sans-serif;  /* Curvy font for a spooky effect */
+    background-color: #000; /* Black background */
+    color: #D1B3FF;  /* Light pastel purple text color */
 }
-
-.section {
-    width: 180px;
-    height: 150px;
-    background-color: rgba(255, 255, 255, 0.8); /* Translucent white for section background */
-    border: 1px solid #4B0082;
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-}
-
 
 #footer {
     height: 30px;
@@ -37,133 +28,59 @@ body {
     color: #D1B3FF;
 }
 
-#dhtmlgoodies_dragDropContainer {
-    width: 1000px; /* Increased width to fit all four sections in one line */
-    height: 600px; /* Adjusted height to match background image proportions */
+#dhtmlgoodies_dragDropContainer { /* Main container */
+    width: 1100px; /* Adjusted width to fit all four sections side by side */
+    height: 700px; /* Adjusted height to match background image */
     border: 2px solid #4B0082; /* Purple border */
-    background-image: url('skeleton.jpg'); /* Use the correct .jpg extension */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-image: url('skeleton_horizontal.png'); /* Background image with correct path */
+    background-size: contain; /* Scale the image within the container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
 }
 
-
-#dhtmlgoodies_dragDropContainer ul { /* General rules for all <ul> */
-    margin-top: 0px;
-    margin-left: 0px;
-    margin-bottom: 0px;
-    padding: 2px;
-    color: #D1B3FF;  /* Light pastel purple text */
+#dhtmlgoodies_listOfItems { /* Left column "Available items" */
+    width: 180px;
+    margin-right: 20px; /* Added space between list and main container */
 }
 
-#dhtmlgoodies_dragDropContainer li, #dragContent li, li#indicateDestination { /* Movable items, i.e., <LI> */
+#allItems {
     list-style-type: none;
-    height: 20px;
-    background-color: #4B0082;  /* Dark purple for spooky effect */
-    border: 1px solid #D1B3FF;  /* Pastel purple border */
-    color: #D1B3FF;  /* Pastel purple text */
-    padding: 2px;
-    margin-bottom: 5px;
+    padding: 0;
+    margin: 0;
+    max-height: 500px; /* Restrict height with scroll */
+    overflow-y: auto;
+}
+
+#dhtmlgoodies_listOfItems li { /* Movable items */
     cursor: pointer;
-    font-size: 15px;
-    line-height: 20px;
-}
-
-li#indicateDestination { /* Box indicating where content will be dropped - if not using arrow */
-    border: 1px dashed #D1B3FF;  /* Dashed border for indicator */
-    background-color: #1A1A1A;
-}
-
-#dhtmlgoodies_dragDropContainer ul li.correctAnswer { /* Correctly moved item */
-    background-color: #32CD32;  /* Lime green for correct answers */
-    color: #FFF;
-}
-
-#dhtmlgoodies_dragDropContainer ul li.wrongAnswer { /* Item moved to wrong box */
-    background-color: #8B0000;  /* Dark red for incorrect answers */
-    color: #FFF;
-}
-
-/* LEFT COLUMN CSS */
-div#dhtmlgoodies_listOfItems { /* Left column "Available items" */
-    float: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: #2E2E2E;  /* Dark gray for list items container */
-    color: #D1B3FF;  /* Pastel purple text */
-
-    /* CSS HACK */
-    width: 180px; /* IE 5.x */
-    width/* */:/**/160px; /* Other browsers */
-    width: /**/160px;
-}
-
-#dhtmlgoodies_listOfItems ul { /* Left (source) column <ul> */
-    height: 560px;
-    background-color: #1A1A1A;
-    border: 1px solid #4B0082;
-    color: #D1B3FF;
-}
-
-div#dhtmlgoodies_listOfItems div {
-    border: 1px solid #999;
-}
-
-div#dhtmlgoodies_listOfItems div ul { /* Left column <ul> */
-    margin-left: 10px; /* Space at the left of list - for positioning the arrow */
-}
-
-#dhtmlgoodies_listOfItems div p { /* Heading above left column */
-    margin: 0px;
-    font-weight: bold;
-    padding-left: 12px;
-    background-color: #4B0082; /* Purple heading background */
-    color: #D1B3FF; /* Pastel purple text */
+    padding: 10px;
+    background-color: #4B0082; /* Dark purple for spooky effect */
+    color: #D1B3FF; /* Light pastel purple */
+    border: 1px solid #D1B3FF;
     margin-bottom: 5px;
 }
-
-/* END LEFT COLUMN CSS */
-
-#dhtmlgoodies_dragDropContainer .mouseover { /* Mouse over effect DIV box in right column */
-    background-color: #E2EBED;
-    border: 1px solid #317082;
-}
-
-/* Start main container CSS */
-
 
 #dhtmlgoodies_mainContainer {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
 }
 
-#dhtmlgoodies_mainContainer div { /* Parent <div> of small boxes */
-    float: left;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-top: 0px;
-    border: 1px solid #999;
-    background-color: #2E2E2E;  /* Dark gray for main container boxes */
-    color: #D1B3FF;
-
-    /* CSS HACK */
-    width: 172px; /* IE 5.x */
-    width/* */:/**/170px; /* Other browsers */
-    width: /**/170px;
+.section {
+    width: 220px; /* Slightly larger to fit four sections */
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.8); /* Translucent white */
+    border: 1px solid #4B0082;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
 }
 
-
-
-#dhtmlgoodies_mainContainer div ul {
-    margin-left: 10px;
-}
-
-#dhtmlgoodies_mainContainer div p { /* Heading above small boxes */
+#dhtmlgoodies_mainContainer div p { /* Section headings */
     margin: 0px;
     padding: 0px;
     padding-left: 12px;
@@ -173,17 +90,7 @@ div#dhtmlgoodies_listOfItems div ul { /* Left column <ul> */
     margin-bottom: 5px;
 }
 
-#dhtmlgoodies_mainContainer ul { /* Small box in right column, i.e., <ul> */
-    width: 152px;
-    height: 80px;
-    border: 0px;
-    margin-bottom: 0px;
-    overflow: hidden;
-    background-color: #1A1A1A;
-    border: 1px solid #4B0082;
-    color: #D1B3FF;
-}
-
+/* Dragging indicator and item style */
 #dragContent { /* Drag container */
     position: absolute;
     width: 150px;
@@ -205,6 +112,22 @@ div#dhtmlgoodies_listOfItems div ul { /* Left column <ul> */
     z-index: 1000;
     margin: 0px;
     padding: 0px;
+}
+
+/* Correct and incorrect drop styles */
+#dhtmlgoodies_dragDropContainer ul li.correctAnswer {
+    background-color: #32CD32;  /* Lime green for correct answers */
+    color: #FFF;
+}
+
+#dhtmlgoodies_dragDropContainer ul li.wrongAnswer {
+    background-color: #8B0000;  /* Dark red for incorrect answers */
+    color: #FFF;
+}
+
+li#indicateDestination {
+    border: 1px dashed #D1B3FF;  /* Dashed border for destination indicator */
+    background-color: #1A1A1A;
 }
 
 .style1 {
