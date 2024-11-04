@@ -2,208 +2,190 @@
 <html>
 
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>Fictional Places Quiz</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Fictional Places Quiz</title>
+    <link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet" href="style.css">
+    <script type="text/javascript">
+        /* VARIABLES YOU COULD MODIFY */
+        var boxSizeArray = [3, 3, 3, 3, 3, 3]; // Array indicating how many items there is room for in the right column ULs
+        var arrow_offsetX = -5; // Offset X - position of small arrow
+        var arrow_offsetY = 0; // Offset Y - position of small arrow
+        var verticalSpaceBetweenListItems = 3; // Pixels space between one <li> and next
+        var initShuffleItems = true; // Shuffle items before starting
+        var indicateDestionationByUseOfArrow = true; // Display arrow to indicate where object will be dropped(false = use rectangle)
+        var lockedAfterDrag = false; /* Lock items after they have been dragged */
 
-<script type="text/javascript">
-/* VARIABLES YOU COULD MODIFY */
-var boxSizeArray = [3, 3, 3, 3, 3, 3]; // Array indicating how many items there is room for in the right column ULs
-var arrow_offsetX = -5; // Offset X - position of small arrow
-var arrow_offsetY = 0; // Offset Y - position of small arrow
-var verticalSpaceBetweenListItems = 3; // Pixels space between one <li> and next
-var initShuffleItems = true; // Shuffle items before starting
-var lockedAfterDrag = false; /* Lock items after they have been dragged */
+        /* Initialize essential variables */
+        var dragDropTopContainer = false;
+        var dragTimer = -1;
+        var dragContentObj = false;
+        var contentToBeDragged = false;
+        var contentToBeDragged_src = false;
+        var contentToBeDragged_next = false;
+        var destinationObj = false;
+        var dragDropIndicator = false;
+        var ulPositionArray = [];
+        var mouseoverObj = false;
+        var destinationBoxes = new Array();
+        var indicateDestinationBox = false;
 
-/* Initialize essential variables */
-var dragContentObj = false;
-var contentToBeDragged = false;
-var destinationObj = false;
-var dragDropIndicator = false;
-var dragTimer = -1;
-var mouseoverObj = false;
-var ulPositionArray = [];
+        /* Initialization functions (similar to original code) */
+        function initDragDropScript() {
+            dragContentObj = document.getElementById('dragContent');
+            dragDropIndicator = document.getElementById('dragDropIndicator');
+            dragDropTopContainer = document.getElementById('dhtmlgoodies_dragDropContainer');
 
-/* Function to initialize the drag-and-drop script */
-function initDragDropScript() {
-    dragContentObj = document.getElementById('dragContent');
-    dragDropIndicator = document.getElementById('dragDropIndicator');
-    
-    var listItems = document.querySelectorAll("#dhtmlgoodies_listOfItems li");
-    listItems.forEach(item => {
-        item.onmousedown = initDrag;
-        item.ondragstart = function() { return false; }; // Prevent default drag
-    });
+            document.documentElement.onselectstart = cancelEvent;
+            var listItems = dragDropTopContainer.getElementsByTagName('LI');
+            for (var no = 0; no < listItems.length; no++) {
+                listItems[no].onmousedown = initDrag;
+                listItems[no].onselectstart = cancelEvent;
+            }
 
-    document.onmousemove = moveDragContent;
-    document.onmouseup = dragDropEnd;
+            document.documentElement.onmousemove = moveDragContent;
+            document.documentElement.onmouseup = dragDropEnd;
 
-    var uls = document.querySelectorAll("#dhtmlgoodies_mainContainer ul");
-    for (var i = 0; i < uls.length; i++) {
-        ulPositionArray.push({
-            left: getLeftPos(uls[i]),
-            top: getTopPos(uls[i]),
-            width: uls[i].offsetWidth,
-            height: uls[i].offsetHeight,
-            obj: uls[i]
-        });
-    }
-}
-
-/* Utility functions to get element positions */
-function getTopPos(inputObj) {
-    var top = 0;
-    while (inputObj) {
-        top += inputObj.offsetTop;
-        inputObj = inputObj.offsetParent;
-    }
-    return top;
-}
-
-function getLeftPos(inputObj) {
-    var left = 0;
-    while (inputObj) {
-        left += inputObj.offsetLeft;
-        inputObj = inputObj.offsetParent;
-    }
-    return left;
-}
-
-/* Start dragging the item */
-function initDrag(e) {
-    if (lockedAfterDrag && this.parentNode.id !== 'allItems') return;
-    e = e || window.event;
-    dragTimer = 0;
-    dragContentObj.style.left = e.clientX + 'px';
-    dragContentObj.style.top = e.clientY + 'px';
-    contentToBeDragged = this;
-    dragContentObj.innerHTML = '';
-    dragContentObj.appendChild(contentToBeDragged.cloneNode(true));
-    dragContentObj.style.display = 'block';
-    timerDrag();
-    return false;
-}
-
-function timerDrag() {
-    dragTimer++;
-    if (dragTimer >= 10) {
-        dragContentObj.style.display = 'block';
-    } else {
-        setTimeout(timerDrag, 10);
-    }
-}
-
-/* Move the drag content */
-function moveDragContent(e) {
-    if (dragTimer < 10) return;
-    e = e || window.event;
-    dragContentObj.style.left = e.clientX + 'px';
-    dragContentObj.style.top = e.clientY + 'px';
-    detectDestination(e);
-}
-
-function detectDestination(e) {
-    destinationObj = null;
-    dragDropIndicator.style.display = 'none';
-
-    for (var i = 0; i < ulPositionArray.length; i++) {
-        var ul = ulPositionArray[i];
-        if (
-            e.clientX > ul.left &&
-            e.clientX < ul.left + ul.width &&
-            e.clientY > ul.top &&
-            e.clientY < ul.top + ul.height
-        ) {
-            destinationObj = ul.obj;
-            dragDropIndicator.style.display = 'block';
-            dragDropIndicator.style.left = ul.left + 'px';
-            dragDropIndicator.style.top = ul.top + ul.height / 2 + 'px';
-            break;
+            var mainContainer = document.getElementById('dhtmlgoodies_mainContainer');
+            var uls = mainContainer.getElementsByTagName('UL');
+            for (var no = 0; no < uls.length; no++) {
+                destinationBoxes[destinationBoxes.length] = uls[no];
+                ulPositionArray.push({
+                    left: getLeftPos(uls[no]),
+                    top: getTopPos(uls[no]),
+                    width: uls[no].offsetWidth,
+                    height: uls[no].offsetHeight,
+                    obj: uls[no]
+                });
+            }
         }
-    }
-}
 
-/* End dragging and place the item in the destination */
-function dragDropEnd() {
-    dragTimer = -1;
-    dragContentObj.style.display = 'none';
-    if (destinationObj) {
-        var clonedItem = contentToBeDragged.cloneNode(true);
-        clonedItem.onmousedown = initDrag; // Re-enable dragging for the cloned item
-        destinationObj.appendChild(clonedItem);
-    }
-    contentToBeDragged = null;
-    destinationObj = null;
-    dragDropIndicator.style.display = 'none';
-}
-</script>
+        /* Dragging functions */
+        function initDrag(e) {
+            e = e || window.event;
+            dragTimer = 0;
+            dragContentObj.style.left = e.clientX + 'px';
+            dragContentObj.style.top = e.clientY + 'px';
+            contentToBeDragged = this;
+            contentToBeDragged_src = this.parentNode;
+            dragContentObj.appendChild(contentToBeDragged.cloneNode(true));
+            dragContentObj.style.display = 'block';
+            timerDrag();
+            return false;
+        }
+
+        function timerDrag() {
+            dragTimer++;
+            if (dragTimer >= 10) {
+                dragContentObj.style.display = 'block';
+            } else {
+                setTimeout(timerDrag, 10);
+            }
+        }
+
+        function moveDragContent(e) {
+            e = e || window.event;
+            if (dragTimer < 10) return;
+            dragContentObj.style.left = e.clientX + 'px';
+            dragContentObj.style.top = e.clientY + 'px';
+        }
+
+        function dragDropEnd() {
+            dragTimer = -1;
+            dragContentObj.style.display = 'none';
+            contentToBeDragged = null;
+            destinationObj = null;
+            dragDropIndicator.style.display = 'none';
+        }
+
+        function getTopPos(inputObj) {
+            var returnValue = inputObj.offsetTop;
+            while ((inputObj = inputObj.offsetParent) != null) {
+                if (inputObj.tagName != 'HTML') returnValue += inputObj.offsetTop;
+            }
+            return returnValue;
+        }
+
+        function getLeftPos(inputObj) {
+            var returnValue = inputObj.offsetLeft;
+            while ((inputObj = inputObj.offsetParent) != null) {
+                if (inputObj.tagName != 'HTML') returnValue += inputObj.offsetLeft;
+            }
+            return returnValue;
+        }
+
+        function cancelEvent() {
+            return false;
+        }
+
+        window.onload = initDragDropScript;
+    </script>
 </head>
 
 <body>
-<h1 align="center">Fictional Places Quiz</h1>
-<div style="max-width: fit-content; margin-left: auto; margin-right: auto;">
-    <p>Drag and drop each place to the correct series. Each series box contains <span class="style1">3 places</span>.</p>
-</div>
-<div id="dhtmlgoodies_dragDropContainer">
-    <div id="topBar">
-        <div style="padding-bottom: 5px; width: 728px; height: 1px;"></div>
+    <h1 align="center">Fictional Places Quiz</h1>
+    <div style="max-width: fit-content; margin-left: auto; margin-right: auto;">
+        <p>Drag and drop each place to the correct series. Each series box contains <span class="style1">3 places</span>.</p>
     </div>
-    <div id="dhtmlgoodies_listOfItems">
-        <div class="">
-            <p>Places</p>		
-            <ul id="allItems">
-                <li id="node1" groupid="box1">The Shire</li>
-                <li id="node2" groupid="box1">Mordor</li>
-                <li id="node3" groupid="box1">Rivendell</li>
-                <li id="node4" groupid="box2">Gotham City</li>
-                <li id="node5" groupid="box2">The Batcave</li>
-                <li id="node6" groupid="box2">Arkham Asylum</li>
-                <li id="node7" groupid="box3">Winterfell</li>
-                <li id="node8" groupid="box3">King's Landing</li>
-                <li id="node9" groupid="box3">The Eyrie</li>
-                <li id="node10" groupid="box4">Bikini Bottom</li>
-                <li id="node11" groupid="box4">The Krusty Krab</li>
-                <li id="node12" groupid="box4">Rock Bottom</li>
-                <li id="node13" groupid="box5">Hogwarts</li>
-                <li id="node14" groupid="box5">Diagon Alley</li>
-                <li id="node15" groupid="box5">The Forbidden Forest</li>
-                <li id="node16" groupid="box6">The Death Star</li>
-                <li id="node17" groupid="box6">Tatooine</li>
-                <li id="node18" groupid="box6">Hoth</li>
-            </ul>
+
+    <div id="dhtmlgoodies_dragDropContainer">
+        <div id="dhtmlgoodies_listOfItems">
+            <div>
+                <p>Places</p>
+                <ul id="allItems">
+                    <li id="node1" groupid="box1">The Shire</li>
+                    <li id="node2" groupid="box1">Mordor</li>
+                    <li id="node3" groupid="box1">Rivendell</li>
+                    <li id="node4" groupid="box2">Gotham City</li>
+                    <li id="node5" groupid="box2">The Batcave</li>
+                    <li id="node6" groupid="box2">Arkham Asylum</li>
+                    <li id="node7" groupid="box3">Winterfell</li>
+                    <li id="node8" groupid="box3">King's Landing</li>
+                    <li id="node9" groupid="box3">The Eyrie</li>
+                    <li id="node10" groupid="box4">Bikini Bottom</li>
+                    <li id="node11" groupid="box4">The Krusty Krab</li>
+                    <li id="node12" groupid="box4">Rock Bottom</li>
+                    <li id="node13" groupid="box5">Hogwarts</li>
+                    <li id="node14" groupid="box5">Diagon Alley</li>
+                    <li id="node15" groupid="box5">The Forbidden Forest</li>
+                    <li id="node16" groupid="box6">The Death Star</li>
+                    <li id="node17" groupid="box6">Tatooine</li>
+                    <li id="node18" groupid="box6">Hoth</li>
+                </ul>
+            </div>
         </div>
-    </div>	
-    <div id="dhtmlgoodies_mainContainer">
-        <!-- ONE <UL> for each "series" -->
-        <div class="">
-            <p>The Lord of the Rings</p>
-            <ul style="height: 72px;" id="box1"></ul>
-        </div>
-        <div class="">
-            <p>Batman</p>
-            <ul style="height: 72px;" id="box2"></ul>
-        </div>
-        <div>
-            <p>Game of Thrones</p>
-            <ul style="height: 72px;" id="box3"></ul>
-        </div>
-        <div>
-            <p>SpongeBob SquarePants</p>
-            <ul style="height: 72px;" id="box4"></ul>
-        </div>
-        <div>
-            <p>Harry Potter</p>
-            <ul style="height: 72px;" id="box5"></ul>
-        </div>
-        <div>
-            <p>Star Wars</p>
-            <ul style="height: 72px;" id="box6"></ul>
+
+        <div id="dhtmlgoodies_mainContainer">
+            <div>
+                <p>The Lord of the Rings</p>
+                <ul id="box1"></ul>
+            </div>
+            <div>
+                <p>Batman</p>
+                <ul id="box2"></ul>
+            </div>
+            <div>
+                <p>Game of Thrones</p>
+                <ul id="box3"></ul>
+            </div>
+            <div>
+                <p>SpongeBob SquarePants</p>
+                <ul id="box4"></ul>
+            </div>
+            <div>
+                <p>Harry Potter</p>
+                <ul id="box5"></ul>
+            </div>
+            <div>
+                <p>Star Wars</p>
+                <ul id="box6"></ul>
+            </div>
         </div>
     </div>
-</div>
-<ul style="left: 110px; top: 329px; display: block;" id="dragContent"></ul>
-<div style="display: none; left: 24px; top: 333px;" id="dragDropIndicator"><img src="skeleton.jpg"></div>
-<div id="saveContent"></div>
+
+    <ul style="left: 110px; top: 329px; display: block;" id="dragContent"></ul>
+    <div style="display: none; left: 24px; top: 333px;" id="dragDropIndicator"><img src="insert.gif"></div>
+    <div id="saveContent"></div>
 </body>
+
 </html>
