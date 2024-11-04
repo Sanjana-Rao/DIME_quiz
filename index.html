@@ -62,17 +62,42 @@
 
         /* Dragging functions */
         function initDrag(e) {
-            e = e || window.event;
-            dragTimer = 0;
-            dragContentObj.style.left = e.clientX + 'px';
-            dragContentObj.style.top = e.clientY + 'px';
-            contentToBeDragged = this;
-            contentToBeDragged_src = this.parentNode;
-            dragContentObj.appendChild(contentToBeDragged.cloneNode(true));
-            dragContentObj.style.display = 'block';
-            timerDrag();
-            return false;
-        }
+    e = e || window.event;
+    if (lockedAfterDrag && this.parentNode.id !== 'allItems') return;
+
+    dragTimer = 0;
+    dragContentObj.style.left = e.clientX + 'px';
+    dragContentObj.style.top = e.clientY + 'px';
+    contentToBeDragged = this;
+    contentToBeDragged_src = this.parentNode;
+    contentToBeDragged_next = this.nextSibling; // Store the next sibling to reinsert if needed
+
+    dragContentObj.innerHTML = ''; // Clear previous content
+    dragContentObj.appendChild(contentToBeDragged.cloneNode(true)); // Clone node to drag visually
+    dragContentObj.style.display = 'block';
+    timerDrag();
+    return false;
+}
+
+function dragDropEnd(e) {
+    if (dragTimer < 10) { 
+        dragTimer = -1;
+        return;
+    }
+
+    dragTimer = -1;
+    dragContentObj.style.display = 'none';
+
+    if (destinationObj && destinationObj.tagName === 'UL') {
+        // Append the original dragged item to the destination, not a clone
+        destinationObj.appendChild(contentToBeDragged);
+        contentToBeDragged.className = ''; // Reset any custom class
+    }
+
+    contentToBeDragged = null;
+    destinationObj = null;
+    dragDropIndicator.style.display = 'none';
+}
 
         function timerDrag() {
             dragTimer++;
@@ -88,14 +113,6 @@
             if (dragTimer < 10) return;
             dragContentObj.style.left = e.clientX + 'px';
             dragContentObj.style.top = e.clientY + 'px';
-        }
-
-        function dragDropEnd() {
-            dragTimer = -1;
-            dragContentObj.style.display = 'none';
-            contentToBeDragged = null;
-            destinationObj = null;
-            dragDropIndicator.style.display = 'none';
         }
 
         function getTopPos(inputObj) {
