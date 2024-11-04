@@ -1,7 +1,7 @@
 body {
     font-family: 'Georgia', serif;
-    background-color: #f7f3f2; /* Light pastel pink for a soft background */
-    color: #4a4a4a; /* Subtle dark gray for easy readability */
+    background-color: #0f1b2b; /* Deep cool navy background for high contrast */
+    color: #ffffff; /* White text for readability */
 }
 
 /* Header styling */
@@ -9,7 +9,7 @@ h1 {
     text-align: center;
     font-family: 'Bodoni Moda', serif;
     font-size: 2rem;
-    color: #bda9e0; /* Pastel lavender for a soft accent */
+    color: #58a6ff; /* Bright blue for a cool, high-contrast look */
     margin-bottom: 20px;
 }
 
@@ -19,7 +19,7 @@ h1 {
     text-align: right;
     clear: both;
     padding-right: 3px;
-    background-color: #a3cde7; /* Pastel blue for a calming footer */
+    background-color: #29415b; /* Dark cool blue for footer */
     margin-top: 2px;
     width: 790px;
 }
@@ -32,48 +32,50 @@ h1 {
 #dhtmlgoodies_dragDropContainer { /* Main container */
     width: 1000px;
     height: 600px;
-    background-color: #ffffff; /* White background for a clean look */
+    background-color: #1a2d3e; /* Dark cool blue for container background */
     -moz-user-select: none;
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
     border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); /* High contrast shadow for depth */
 }
 
 #dhtmlgoodies_dragDropContainer ul {
-    margin: 0px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
     padding: 2px;
 }
 
 #dhtmlgoodies_dragDropContainer li, #dragContent li, li#indicateDestination { /* Movable items */
     list-style-type: none;
     border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Cool shadow */
     height: 15px;
-    padding: 2px;
-    margin-bottom: 2px;
+    padding: 5px;
+    margin-bottom: 5px;
     cursor: pointer;
     font-size: 13px;
     line-height: 15px;
-    background-color: #e8d9f0; /* Soft pastel purple */
-    color: #4a4a4a;
+    background-color: #2f4a62; /* Cool dark blue for list items */
+    color: #ffffff; /* White text for readability */
     text-align: center;
 }
 
-li#indicateDestination { /* Drop target */
-    border: 1px dotted #bda9e0; /* Soft purple border */
-    background-color: #ffffff; /* White for contrast */
+li#indicateDestination { /* Drop target indicator */
+    border: 1px dotted #58a6ff; /* Bright blue for drop indication */
+    background-color: #1a2d3e; /* Slightly darker background */
 }
 
 #dhtmlgoodies_dragDropContainer ul li.correctAnswer { /* Correct answer */
-    background-color: #b3e0c5; /* Light pastel green for positive feedback */
-    color: #3e663a;
+    background-color: #66c2a5; /* Cool mint green for correct items */
+    color: #0f1b2b; /* Dark navy text for contrast */
 }
 
 #dhtmlgoodies_dragDropContainer ul li.wrongAnswer { /* Incorrect answer */
-    background-color: #f3b4b4; /* Light pastel red for gentle correction */
-    color: #7a2d2d;
+    background-color: #e85a71; /* Bright red-pink for wrong answer */
+    color: #ffffff; /* White text for readability */
 }
 
 /* LEFT COLUMN CSS */
@@ -92,7 +94,7 @@ div#dhtmlgoodies_listOfItems {
 div#dhtmlgoodies_listOfItems div {
     padding-top: 10px;
     border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Cool shadow */
 }
 
 div#dhtmlgoodies_listOfItems div ul {
@@ -107,13 +109,13 @@ div#dhtmlgoodies_listOfItems div p { /* Left column headings */
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    color: #bda9e0; /* Soft lavender for headings */
+    color: #58a6ff; /* Bright blue for headings */
 }
 
 /* Main container hover effect */
 #dhtmlgoodies_dragDropContainer .mouseover {
-    background-color: #e1e9f0; /* Light pastel blue for hover */
-    border: 1px solid #a3cde7; /* Matching blue border */
+    background-color: #334e6f; /* Slightly lighter cool blue for hover effect */
+    border: 1px solid #58a6ff; /* Blue border for hover */
 }
 
 /* Main container CSS */
@@ -126,9 +128,9 @@ div#dhtmlgoodies_mainContainer {
 #dhtmlgoodies_mainContainer div { /* Small boxes */
     float: left;
     margin: 0 10px 10px 0;
-    border: 1px solid #d3d3e2; /* Soft gray border */
+    border: 1px solid #4d687e; /* Dark gray-blue border */
     border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     width: 172px;
     height: 200px;
 }
@@ -145,7 +147,7 @@ div#dhtmlgoodies_mainContainer {
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
-    color: #bda9e0; /* Soft pastel purple */
+    color: #58a6ff; /* Bright blue for headings */
 }
 
 #dhtmlgoodies_mainContainer ul { /* Inner boxes */
@@ -177,5 +179,5 @@ div#dhtmlgoodies_mainContainer {
 }
 
 .style1 {
-    color: #a3cde7; /* Accent color for additional styling */
+    color: #66c2a5; /* Accent color for additional styling */
 }
