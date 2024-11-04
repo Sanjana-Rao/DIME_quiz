@@ -22,15 +22,10 @@
         var dragContentObj = false;
         var contentToBeDragged = false;
         var contentToBeDragged_src = false;
-        var contentToBeDragged_next = false;
         var destinationObj = false;
         var dragDropIndicator = false;
         var ulPositionArray = [];
-        var mouseoverObj = false;
-        var destinationBoxes = new Array();
-        var indicateDestinationBox = false;
 
-        /* Initialization functions (similar to original code) */
         function initDragDropScript() {
             dragContentObj = document.getElementById('dragContent');
             dragDropIndicator = document.getElementById('dragDropIndicator');
@@ -49,7 +44,6 @@
             var mainContainer = document.getElementById('dhtmlgoodies_mainContainer');
             var uls = mainContainer.getElementsByTagName('UL');
             for (var no = 0; no < uls.length; no++) {
-                destinationBoxes[destinationBoxes.length] = uls[no];
                 ulPositionArray.push({
                     left: getLeftPos(uls[no]),
                     top: getTopPos(uls[no]),
@@ -62,42 +56,70 @@
 
         /* Dragging functions */
         function initDrag(e) {
-    e = e || window.event;
-    if (lockedAfterDrag && this.parentNode.id !== 'allItems') return;
+            e = e || window.event;
+            if (lockedAfterDrag && this.parentNode.id !== 'allItems') return;
 
-    dragTimer = 0;
-    dragContentObj.style.left = e.clientX + 'px';
-    dragContentObj.style.top = e.clientY + 'px';
-    contentToBeDragged = this;
-    contentToBeDragged_src = this.parentNode;
-    contentToBeDragged_next = this.nextSibling; // Store the next sibling to reinsert if needed
+            dragTimer = 0;
+            dragContentObj.style.left = e.clientX + 'px';
+            dragContentObj.style.top = e.clientY + 'px';
+            contentToBeDragged = this;
+            contentToBeDragged_src = this.parentNode;
 
-    dragContentObj.innerHTML = ''; // Clear previous content
-    dragContentObj.appendChild(contentToBeDragged.cloneNode(true)); // Clone node to drag visually
-    dragContentObj.style.display = 'block';
-    timerDrag();
-    return false;
-}
+            dragContentObj.innerHTML = ''; // Clear previous content
+            dragContentObj.appendChild(contentToBeDragged.cloneNode(true)); // Clone node to drag visually
+            dragContentObj.style.display = 'block';
+            timerDrag();
+            return false;
+        }
 
-function dragDropEnd(e) {
-    if (dragTimer < 10) { 
-        dragTimer = -1;
-        return;
-    }
+        function moveDragContent(e) {
+            e = e || window.event;
+            if (dragTimer < 10) return;
+            dragContentObj.style.left = e.clientX + 'px';
+            dragContentObj.style.top = e.clientY + 'px';
 
-    dragTimer = -1;
-    dragContentObj.style.display = 'none';
+            destinationObj = null; // Reset destination object
+            dragDropIndicator.style.display = 'none';
 
-    if (destinationObj && destinationObj.tagName === 'UL') {
-        // Append the original dragged item to the destination, not a clone
-        destinationObj.appendChild(contentToBeDragged);
-        contentToBeDragged.className = ''; // Reset any custom class
-    }
+            var x = e.clientX;
+            var y = e.clientY;
 
-    contentToBeDragged = null;
-    destinationObj = null;
-    dragDropIndicator.style.display = 'none';
-}
+            for (var i = 0; i < ulPositionArray.length; i++) {
+                var ul = ulPositionArray[i];
+                if (
+                    x > ul.left &&
+                    x < ul.left + ul.width &&
+                    y > ul.top &&
+                    y < ul.top + ul.height
+                ) {
+                    destinationObj = ul.obj;
+                    dragDropIndicator.style.display = 'block';
+                    dragDropIndicator.style.left = ul.left + 'px';
+                    dragDropIndicator.style.top = ul.top + ul.height / 2 + 'px';
+                    break;
+                }
+            }
+        }
+
+        function dragDropEnd(e) {
+            if (dragTimer < 10) {
+                dragTimer = -1;
+                return;
+            }
+
+            dragTimer = -1;
+            dragContentObj.style.display = 'none';
+
+            if (destinationObj && destinationObj.tagName === 'UL') {
+                // Append the original dragged item to the destination, not a clone
+                destinationObj.appendChild(contentToBeDragged);
+                contentToBeDragged.className = ''; // Reset any custom class
+            }
+
+            contentToBeDragged = null;
+            destinationObj = null;
+            dragDropIndicator.style.display = 'none';
+        }
 
         function timerDrag() {
             dragTimer++;
@@ -106,13 +128,6 @@ function dragDropEnd(e) {
             } else {
                 setTimeout(timerDrag, 10);
             }
-        }
-
-        function moveDragContent(e) {
-            e = e || window.event;
-            if (dragTimer < 10) return;
-            dragContentObj.style.left = e.clientX + 'px';
-            dragContentObj.style.top = e.clientY + 'px';
         }
 
         function getTopPos(inputObj) {
@@ -202,7 +217,6 @@ function dragDropEnd(e) {
 
     <ul style="left: 110px; top: 329px; display: block;" id="dragContent"></ul>
     <div style="display: none; left: 24px; top: 333px;" id="dragDropIndicator"><img src="insert.gif"></div>
-    <div id="saveContent"></div>
 </body>
 
 </html>
