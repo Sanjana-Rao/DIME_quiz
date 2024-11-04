@@ -29,16 +29,17 @@ h1 {
     margin-top: 2px;
 }
 
-#dhtmlgoodies_dragDropContainer { /* Main container */
+#dhtmlgoodies_dragDropContainer {
     width: 1000px;
-    height: 600px;
-    background-color: #1a2d3e; /* Dark cool blue for container background */
+    height: 600px; /* Adjust height as needed */
+    background-color: #1a2d3e;
     -moz-user-select: none;
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
     border-radius: 12px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); /* High contrast shadow for depth */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden; /* Prevent overflow past the main container */
 }
 
 #dhtmlgoodies_dragDropContainer ul {
@@ -47,6 +48,7 @@ h1 {
     margin-bottom: 0px;
     padding: 2px;
 }
+
 
 #dhtmlgoodies_dragDropContainer li, #dragContent li, li#indicateDestination { /* Movable items */
     list-style-type: none;
@@ -84,7 +86,10 @@ div#dhtmlgoodies_listOfItems {
     padding-left: 50px;
     padding-right: 10px;
     padding-top: 70px;
-    width: 160px;
+    width: 180px; /* Adjust width if needed */
+    height: 400px; /* Set a fixed height for the list */
+    overflow-y: auto; /* Add vertical scroll if items exceed container height */
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 #dhtmlgoodies_listOfItems ul {
