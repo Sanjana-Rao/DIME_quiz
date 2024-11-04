@@ -80,6 +80,18 @@ li#indicateDestination { /* Drop target indicator */
     color: #ffffff; /* White text for readability */
 }
 
+/* Correctly placed items */
+.correctAnswer {
+    background-color: #66c2a5; /* Green background for correct answer */
+    color: #ffffff; /* White text */
+}
+
+/* Incorrectly placed items */
+.wrongAnswer {
+    background-color: #e85a71; /* Red background for wrong answer */
+    color: #ffffff; /* White text */
+}
+
 /* LEFT COLUMN CSS */
 div#dhtmlgoodies_listOfItems {
     float: left;

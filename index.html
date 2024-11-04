@@ -111,15 +111,23 @@
             dragContentObj.style.display = 'none';
 
             if (destinationObj && destinationObj.tagName === 'UL') {
-                // Append the original dragged item to the destination, not a clone
+                // Check if the item was dropped in the correct box
+                var groupId = contentToBeDragged.getAttribute('groupid');
+                if (groupId === destinationObj.id) {
+                    contentToBeDragged.className = 'correctAnswer'; // Apply green color
+                } else {
+                    contentToBeDragged.className = 'wrongAnswer'; // Apply red color
+                }
+
+                // Append the original dragged item to the destination
                 destinationObj.appendChild(contentToBeDragged);
-                contentToBeDragged.className = ''; // Reset any custom class
             }
 
             contentToBeDragged = null;
             destinationObj = null;
             dragDropIndicator.style.display = 'none';
         }
+
 
         function timerDrag() {
             dragTimer++;
