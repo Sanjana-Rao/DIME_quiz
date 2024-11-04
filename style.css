@@ -1,14 +1,16 @@
-/* Spooky Theme CSS */
-
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background-color: #000; /* Black background for spooky theme */
-    font-family: 'Comic Sans MS', cursive, sans-serif; /* Curvy font for spooky effect */
-    color: #D1B3FF; /* Light pastel purple text color */
+    font-family: 'Georgia', serif;
+    background-color: #f7f3f2; /* Light pastel pink for a soft background */
+    color: #4a4a4a; /* Subtle dark gray for easy readability */
+}
+
+/* Header styling */
+h1 {
+    text-align: center;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 2rem;
+    color: #bda9e0; /* Pastel lavender for a soft accent */
+    margin-bottom: 20px;
 }
 
 #footer {
@@ -17,7 +19,7 @@ body {
     text-align: right;
     clear: both;
     padding-right: 3px;
-    background-color: #4B0082; /* Darker purple for footer */
+    background-color: #a3cde7; /* Pastel blue for a calming footer */
     margin-top: 2px;
     width: 790px;
 }
@@ -25,125 +27,149 @@ body {
 #footer form {
     margin: 0px;
     margin-top: 2px;
-    color: #D1B3FF;
 }
 
-#dhtmlgoodies_dragDropContainer { /* Main container for drag and drop */
-    width: 900px; /* Adjust width to match the background image */
-    height: 600px; /* Adjust height to match the background image */
-    border: 2px solid #4B0082; /* Purple border */
-    background-image: url('skeleton_horizontal.png'); /* Background image with correct path */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative; /* Set relative positioning for absolute overlays */
-    padding: 20px;
+#dhtmlgoodies_dragDropContainer { /* Main container */
+    width: 1000px;
+    height: 600px;
+    background-color: #ffffff; /* White background for a clean look */
+    -moz-user-select: none;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-#dhtmlgoodies_listOfItems { /* Left column "Available items" */
-    width: 180px;
-    margin-right: 20px;
+#dhtmlgoodies_dragDropContainer ul {
+    margin: 0px;
+    padding: 2px;
 }
 
-#allItems {
+#dhtmlgoodies_dragDropContainer li, #dragContent li, li#indicateDestination { /* Movable items */
     list-style-type: none;
-    padding: 0;
-    margin: 0;
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-#dhtmlgoodies_listOfItems li { /* Movable items */
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    height: 15px;
+    padding: 2px;
+    margin-bottom: 2px;
     cursor: pointer;
-    padding: 10px;
-    background-color: #4B0082; /* Dark purple for spooky effect */
-    color: #D1B3FF; /* Light pastel purple */
-    border: 1px solid #D1B3FF;
-    margin-bottom: 5px;
-}
-
-#dhtmlgoodies_mainContainer {
-    position: absolute;
-    top: 0;
-    left: 200px; /* Position to the right of the item list */
-    width: 100%; /* Full width for overlay sections */
-    height: 100%;
-}
-
-/* Overlay sections positioned on top of the background image */
-.section {
-    position: absolute;
-    background-color: rgba(75, 0, 130, 0.5); /* Semi-transparent purple overlay */
-    border: 1px solid #4B0082;
-    color: #FFF;
+    font-size: 13px;
+    line-height: 15px;
+    background-color: #e8d9f0; /* Soft pastel purple */
+    color: #4a4a4a;
     text-align: center;
-    padding: 10px;
 }
 
-/* Position each section based on the layout of the skeleton background image */
-#head {
-    top: 20px;
-    left: 150px;
-    width: 180px;
-    height: 100px;
+li#indicateDestination { /* Drop target */
+    border: 1px dotted #bda9e0; /* Soft purple border */
+    background-color: #ffffff; /* White for contrast */
 }
 
-#arms {
-    top: 150px;
-    left: 80px;
-    width: 200px;
-    height: 100px;
+#dhtmlgoodies_dragDropContainer ul li.correctAnswer { /* Correct answer */
+    background-color: #b3e0c5; /* Light pastel green for positive feedback */
+    color: #3e663a;
 }
 
-#torso {
-    top: 150px;
-    left: 300px;
-    width: 200px;
-    height: 150px;
+#dhtmlgoodies_dragDropContainer ul li.wrongAnswer { /* Incorrect answer */
+    background-color: #f3b4b4; /* Light pastel red for gentle correction */
+    color: #7a2d2d;
 }
 
-#legs {
-    top: 350px;
-    left: 250px;
-    width: 200px;
-    height: 150px;
+/* LEFT COLUMN CSS */
+div#dhtmlgoodies_listOfItems {
+    float: left;
+    padding-left: 50px;
+    padding-right: 10px;
+    padding-top: 70px;
+    width: 160px;
 }
 
-/* Styles for correct and incorrect answers */
-#dhtmlgoodies_dragDropContainer ul li.correctAnswer {
-    background-color: #32CD32; /* Lime green for correct answers */
-    color: #FFF;
+#dhtmlgoodies_listOfItems ul {
+    height: 380px;
 }
 
-#dhtmlgoodies_dragDropContainer ul li.wrongAnswer {
-    background-color: #8B0000; /* Dark red for incorrect answers */
-    color: #FFF;
+div#dhtmlgoodies_listOfItems div {
+    padding-top: 10px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Box to indicate where content will be dropped */
-li#indicateDestination {
-    border: 1px dashed #D1B3FF;
-    background-color: #1A1A1A;
+div#dhtmlgoodies_listOfItems div ul {
+    margin-left: 10px;
 }
 
-/* Additional styles for drag and drop behavior */
+div#dhtmlgoodies_listOfItems div p { /* Left column headings */
+    margin: 0px;
+    font-weight: bold;
+    padding-left: 12px;
+    margin-bottom: 5px;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    color: #bda9e0; /* Soft lavender for headings */
+}
+
+/* Main container hover effect */
+#dhtmlgoodies_dragDropContainer .mouseover {
+    background-color: #e1e9f0; /* Light pastel blue for hover */
+    border: 1px solid #a3cde7; /* Matching blue border */
+}
+
+/* Main container CSS */
+div#dhtmlgoodies_mainContainer {
+    padding-top: 70px;
+    width: 590px;
+    float: left;
+}
+
+#dhtmlgoodies_mainContainer div { /* Small boxes */
+    float: left;
+    margin: 0 10px 10px 0;
+    border: 1px solid #d3d3e2; /* Soft gray border */
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    width: 172px;
+    height: 200px;
+}
+
+#dhtmlgoodies_mainContainer div ul {
+    margin-left: 10px;
+}
+
+#dhtmlgoodies_mainContainer div p { /* Box headings */
+    margin: 0;
+    padding-left: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    color: #bda9e0; /* Soft pastel purple */
+}
+
+#dhtmlgoodies_mainContainer ul { /* Inner boxes */
+    width: 152px;
+    height: 80px;
+    border: 0;
+    margin-bottom: 0px;
+    overflow: hidden;
+}
+
 #dragContent { /* Drag container */
     position: absolute;
     width: 150px;
     height: 15px;
     display: none;
-    background-color: #4B0082; /* Dark purple for drag content */
-    border: 1px solid #D1B3FF;
     margin: 0px;
     padding: 0px;
     z-index: 2000;
 }
 
-#dragDropIndicator { /* DIV for the small arrow */
+#dragDropIndicator { /* Small arrow */
     position: absolute;
     width: 7px;
     height: 10px;
-    background-color: #D1B3FF; /* Pastel purple for drag-drop indicator */
     display: none;
     z-index: 1000;
     margin: 0px;
@@ -151,5 +177,5 @@ li#indicateDestination {
 }
 
 .style1 {
-    color: #FF4500; /* Bright orange for emphasis */
+    color: #a3cde7; /* Accent color for additional styling */
 }

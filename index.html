@@ -2,204 +2,109 @@
 <html>
 
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Drag and Drop Anatomy Quiz</title>
-    <link rel="stylesheet" href="style.css">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Fictional Places Quiz</title>
 
-    <script type="text/javascript">
-        /* JavaScript remains largely the same, with minor adjustments if needed for customization */
-        /* VARIABLES YOU COULD MODIFY */
-        var boxSizeArray = [3, 3, 3, 3]; // Adjusted for four sections
-        var arrow_offsetX = -5;
-        var arrow_offsetY = 0;
-        var arrow_offsetX_firefox = -6;
-        var arrow_offsetY_firefox = -13;
-        var verticalSpaceBetweenListItems = 3;
-        var initShuffleItems = true;
-        var indicateDestionationByUseOfArrow = true;
-        var lockedAfterDrag = false;
+<link rel="stylesheet" href="style.css">
 
-        var dragDropTopContainer = false;
-        var dragTimer = -1;
-        var dragContentObj = false;
-        var contentToBeDragged = false;
-        var contentToBeDragged_src = false;
-        var contentToBeDragged_next = false;
-        var destinationObj = false;
-        var dragDropIndicator = false;
-        var ulPositionArray = [];
-        var mouseoverObj = false;
+<script type="text/javascript">
+/* VARIABLES YOU COULD MODIFY */
+var boxSizeArray = [3, 3, 3, 3, 3, 3]; // Array indicating how many items there is room for in the right column ULs
 
-        function getTopPos(inputObj) {
-            var returnValue = inputObj.offsetTop;
-            while ((inputObj = inputObj.offsetParent) != null) {
-                if (inputObj.tagName != 'HTML') returnValue += inputObj.offsetTop;
-            }
-            return returnValue;
-        }
+var arrow_offsetX = -5; // Offset X - position of small arrow
+var arrow_offsetY = 0; // Offset Y - position of small arrow
 
-        function getLeftPos(inputObj) {
-            var returnValue = inputObj.offsetLeft;
-            while ((inputObj = inputObj.offsetParent) != null) {
-                if (inputObj.tagName != 'HTML') returnValue += inputObj.offsetLeft;
-            }
-            return returnValue;
-        }
+var arrow_offsetX_firefox = -6; // Firefox - offset X small arrow
+var arrow_offsetY_firefox = -13; // Firefox - offset Y small arrow
 
-        function cancelEvent() {
-            return false;
-        }
+var verticalSpaceBetweenListItems = 3; // Pixels space between one <li> and next	
+var initShuffleItems = true; // Shuffle items before staring
+var indicateDestionationByUseOfArrow = true; // Display arrow to indicate where object will be dropped(false = use rectangle)
+var lockedAfterDrag = false; /* Lock items after they have been dragged */
 
-        function initDrag(e) {
-            if (document.all) e = event;
-            if (lockedAfterDrag && this.parentNode.id != 'allItems') return;
-            var st = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-            var sl = Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
+/* END VARIABLES YOU COULD MODIFY */
 
-            dragTimer = 0;
-            dragContentObj.style.left = e.clientX + sl + 'px';
-            dragContentObj.style.top = e.clientY + st + 'px';
-            contentToBeDragged = this;
-            contentToBeDragged_src = this.parentNode;
-            contentToBeDragged_next = this.nextSibling || null;
+var dragDropTopContainer = false;
+var dragTimer = -1;
+var dragContentObj = false;
+var contentToBeDragged = false; // Reference to dragged <li>
+var contentToBeDragged_src = false; // Reference to parent of <li> before drag started
+var contentToBeDragged_next = false; // Reference to next sibling of <li> to be dragged
+var destinationObj = false; // Reference to <UL> or <LI> where element is dropped.
+var dragDropIndicator = false; // Reference to small arrow indicating where items will be dropped
+var ulPositionArray = new Array();
+var mouseoverObj = false; // Reference to highlighted DIV
 
-            timerDrag();
-            return false;
-        }
+/* Add your JS functions here (drag, drop, check answers, etc.) */
 
-        function everythingIsCorrect() {
-            alert('Congratulations! Everything is correct');
-        }
-
-        function timerDrag() {
-            if (dragTimer >= 0 && dragTimer < 10) {
-                dragTimer++;
-                setTimeout('timerDrag()', 10);
-                return;
-            }
-            if (dragTimer == 10) {
-                dragContentObj.style.display = 'block';
-                dragContentObj.appendChild(contentToBeDragged);
-            }
-        }
-
-        function moveDragContent(e) {
-            if (dragTimer < 10) return;
-            if (document.all) e = event;
-
-            var st = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-            var sl = Math.max(document.body.scrollLeft, document.documentElement.scrollLeft);
-
-            dragContentObj.style.left = e.clientX + sl + 'px';
-            dragContentObj.style.top = e.clientY + st + 'px';
-        }
-
-        function checkAnswers() {
-            for (var no = 0; no < destinationBoxes.length; no++) {
-                var subLis = destinationBoxes[no].getElementsByTagName('LI');
-                if (subLis.length < boxSizeArray[no]) return;
-
-                for (var no2 = 0; no2 < subLis.length; no2++) {
-                    if (subLis[no2].className == 'wrongAnswer') return;
-                }
-            }
-            everythingIsCorrect();
-        }
-
-        function dragDropEnd(e) {
-            if (dragTimer == -1) return;
-            if (dragTimer < 10) {
-                dragTimer = -1;
-                return;
-            }
-            dragTimer = -1;
-            if (document.all) e = event;
-
-            if (destinationObj) {
-                var groupId = contentToBeDragged.getAttribute('groupId');
-                var answerCheck = false;
-                if (groupId == destinationObj.id) {
-                    contentToBeDragged.className = 'correctAnswer';
-                    answerCheck = true;
-                } else {
-                    contentToBeDragged.className = 'wrongAnswer';
-                }
-
-                destinationObj.appendChild(contentToBeDragged);
-                if (answerCheck) checkAnswers();
-                return;
-            }
-
-            if (contentToBeDragged_next) {
-                contentToBeDragged_src.insertBefore(contentToBeDragged, contentToBeDragged_next);
-            } else {
-                contentToBeDragged_src.appendChild(contentToBeDragged);
-            }
-        }
-
-        function initDragDropScript() {
-            dragContentObj = document.getElementById('dragContent');
-            dragDropIndicator = document.getElementById('dragDropIndicator');
-            dragDropTopContainer = document.getElementById('dhtmlgoodies_dragDropContainer');
-
-            var listItems = dragDropTopContainer.getElementsByTagName('LI');
-            for (var no = 0; no < listItems.length; no++) {
-                listItems[no].onmousedown = initDrag;
-            }
-
-            document.documentElement.onmousemove = moveDragContent;
-            document.documentElement.onmouseup = dragDropEnd;
-        }
-
-        window.onload = initDragDropScript;
-    </script>
+window.onload = initDragDropScript;
+</script>
 </head>
 
 <body>
-    <h1 align="center">Anatomy Bones and Muscles Quiz</h1>
-    <p>Drag each bone or muscle to the appropriate section of the body. Correct drops will turn green, and incorrect drops will turn red.</p>
-
-    <div id="dhtmlgoodies_dragDropContainer" style="background-image: url('skeleton.jpg'); background-size: contain; background-position: center; background-repeat: no-repeat;">
-        <div id="dhtmlgoodies_listOfItems">
-            <div>
-                <p>Bones/Muscles</p>
-                <ul id="allItems">
-                    <li id="node1" groupid="head">Skull</li>
-                    <li id="node2" groupid="arms">Biceps</li>
-                    <li id="node3" groupid="torso">Rib Cage</li>
-                    <li id="node4" groupid="legs">Femur</li>
-                    <li id="node5" groupid="head">Mandible</li>
-                    <li id="node6" groupid="arms">Triceps</li>
-                    <li id="node7" groupid="torso">Sternum</li>
-                    <li id="node8" groupid="legs">Tibia</li>
-                </ul>
-            </div>
+<h1 align="center">Fictional Places Quiz</h1>
+<div style="max-width: fit-content; margin-left: auto; margin-right: auto;">
+    <p>Drag and drop each place to the correct series. Each series box contains <span class="style1">3 places</span>.</p>
+</div>
+<div id="dhtmlgoodies_dragDropContainer">
+    <div id="topBar">
+        <div style="padding-bottom: 5px; width: 728px; height: 1px;"></div>
+    </div>
+    <div id="dhtmlgoodies_listOfItems">
+        <div class="">
+            <p>Places</p>		
+            <ul id="allItems">
+                <li id="node1" groupid="box1">The Shire</li>
+                <li id="node2" groupid="box1">Mordor</li>
+                <li id="node3" groupid="box1">Rivendell</li>
+                <li id="node4" groupid="box2">Gotham City</li>
+                <li id="node5" groupid="box2">The Batcave</li>
+                <li id="node6" groupid="box2">Arkham Asylum</li>
+                <li id="node7" groupid="box3">Winterfell</li>
+                <li id="node8" groupid="box3">King's Landing</li>
+                <li id="node9" groupid="box3">The Eyrie</li>
+                <li id="node10" groupid="box4">Bikini Bottom</li>
+                <li id="node11" groupid="box4">The Krusty Krab</li>
+                <li id="node12" groupid="box4">Rock Bottom</li>
+                <li id="node13" groupid="box5">Hogwarts</li>
+                <li id="node14" groupid="box5">Diagon Alley</li>
+                <li id="node15" groupid="box5">The Forbidden Forest</li>
+                <li id="node16" groupid="box6">The Death Star</li>
+                <li id="node17" groupid="box6">Tatooine</li>
+                <li id="node18" groupid="box6">Hoth</li>
+            </ul>
         </div>
-    
-        <div id="dhtmlgoodies_mainContainer">
-            <div class="section">
-                <p>Head/Upper Body</p>
-                <ul id="head"></ul>
-            </div>
-    
-            <div class="section">
-                <p>Arms/Hands</p>
-                <ul id="arms"></ul>
-            </div>
-    
-            <div class="section">
-                <p>Torso</p>
-                <ul id="torso"></ul>
-            </div>
-    
-            <div class="section">
-                <p>Legs/Feet</p>
-                <ul id="legs"></ul>
-            </div>
+    </div>	
+    <div id="dhtmlgoodies_mainContainer">
+        <!-- ONE <UL> for each "series" -->
+        <div class="">
+            <p>The Lord of the Rings</p>
+            <ul style="height: 72px;" id="box1"></ul>
         </div>
-    </div>    
-
-    <div id="saveContent"></div>
+        <div class="">
+            <p>Batman</p>
+            <ul style="height: 72px;" id="box2"></ul>
+        </div>
+        <div>
+            <p>Game of Thrones</p>
+            <ul style="height: 72px;" id="box3"></ul>
+        </div>
+        <div>
+            <p>SpongeBob SquarePants</p>
+            <ul style="height: 72px;" id="box4"></ul>
+        </div>
+        <div>
+            <p>Harry Potter</p>
+            <ul style="height: 72px;" id="box5"></ul>
+        </div>
+        <div>
+            <p>Star Wars</p>
+            <ul style="height: 72px;" id="box6"></ul>
+        </div>
+    </div>
+</div>
+<ul style="left: 110px; top: 329px; display: block;" id="dragContent"></ul>
+<div style="display: none; left: 24px; top: 333px;" id="dragDropIndicator"><img src="insert.gif"></div>
+<div id="saveContent"></div>
 </body>
-
 </html>
