@@ -10,34 +10,133 @@
 <script type="text/javascript">
 /* VARIABLES YOU COULD MODIFY */
 var boxSizeArray = [3, 3, 3, 3, 3, 3]; // Array indicating how many items there is room for in the right column ULs
-
 var arrow_offsetX = -5; // Offset X - position of small arrow
 var arrow_offsetY = 0; // Offset Y - position of small arrow
-
-var arrow_offsetX_firefox = -6; // Firefox - offset X small arrow
-var arrow_offsetY_firefox = -13; // Firefox - offset Y small arrow
-
-var verticalSpaceBetweenListItems = 3; // Pixels space between one <li> and next	
-var initShuffleItems = true; // Shuffle items before staring
-var indicateDestionationByUseOfArrow = true; // Display arrow to indicate where object will be dropped(false = use rectangle)
+var verticalSpaceBetweenListItems = 3; // Pixels space between one <li> and next
+var initShuffleItems = true; // Shuffle items before starting
 var lockedAfterDrag = false; /* Lock items after they have been dragged */
 
-/* END VARIABLES YOU COULD MODIFY */
-
-var dragDropTopContainer = false;
-var dragTimer = -1;
+/* Initialize essential variables */
 var dragContentObj = false;
-var contentToBeDragged = false; // Reference to dragged <li>
-var contentToBeDragged_src = false; // Reference to parent of <li> before drag started
-var contentToBeDragged_next = false; // Reference to next sibling of <li> to be dragged
-var destinationObj = false; // Reference to <UL> or <LI> where element is dropped.
-var dragDropIndicator = false; // Reference to small arrow indicating where items will be dropped
-var ulPositionArray = new Array();
-var mouseoverObj = false; // Reference to highlighted DIV
+var contentToBeDragged = false;
+var destinationObj = false;
+var dragDropIndicator = false;
+var dragTimer = -1;
+var mouseoverObj = false;
+var ulPositionArray = [];
 
-/* Add your JS functions here (drag, drop, check answers, etc.) */
+/* Function to initialize the drag-and-drop script */
+function initDragDropScript() {
+    dragContentObj = document.getElementById('dragContent');
+    dragDropIndicator = document.getElementById('dragDropIndicator');
+    
+    var listItems = document.querySelectorAll("#dhtmlgoodies_listOfItems li");
+    listItems.forEach(item => {
+        item.onmousedown = initDrag;
+        item.ondragstart = function() { return false; }; // Prevent default drag
+    });
 
-window.onload = initDragDropScript;
+    document.onmousemove = moveDragContent;
+    document.onmouseup = dragDropEnd;
+
+    var uls = document.querySelectorAll("#dhtmlgoodies_mainContainer ul");
+    for (var i = 0; i < uls.length; i++) {
+        ulPositionArray.push({
+            left: getLeftPos(uls[i]),
+            top: getTopPos(uls[i]),
+            width: uls[i].offsetWidth,
+            height: uls[i].offsetHeight,
+            obj: uls[i]
+        });
+    }
+}
+
+/* Utility functions to get element positions */
+function getTopPos(inputObj) {
+    var top = 0;
+    while (inputObj) {
+        top += inputObj.offsetTop;
+        inputObj = inputObj.offsetParent;
+    }
+    return top;
+}
+
+function getLeftPos(inputObj) {
+    var left = 0;
+    while (inputObj) {
+        left += inputObj.offsetLeft;
+        inputObj = inputObj.offsetParent;
+    }
+    return left;
+}
+
+/* Start dragging the item */
+function initDrag(e) {
+    if (lockedAfterDrag && this.parentNode.id !== 'allItems') return;
+    e = e || window.event;
+    dragTimer = 0;
+    dragContentObj.style.left = e.clientX + 'px';
+    dragContentObj.style.top = e.clientY + 'px';
+    contentToBeDragged = this;
+    dragContentObj.innerHTML = '';
+    dragContentObj.appendChild(contentToBeDragged.cloneNode(true));
+    dragContentObj.style.display = 'block';
+    timerDrag();
+    return false;
+}
+
+function timerDrag() {
+    dragTimer++;
+    if (dragTimer >= 10) {
+        dragContentObj.style.display = 'block';
+    } else {
+        setTimeout(timerDrag, 10);
+    }
+}
+
+/* Move the drag content */
+function moveDragContent(e) {
+    if (dragTimer < 10) return;
+    e = e || window.event;
+    dragContentObj.style.left = e.clientX + 'px';
+    dragContentObj.style.top = e.clientY + 'px';
+    detectDestination(e);
+}
+
+function detectDestination(e) {
+    destinationObj = null;
+    dragDropIndicator.style.display = 'none';
+
+    for (var i = 0; i < ulPositionArray.length; i++) {
+        var ul = ulPositionArray[i];
+        if (
+            e.clientX > ul.left &&
+            e.clientX < ul.left + ul.width &&
+            e.clientY > ul.top &&
+            e.clientY < ul.top + ul.height
+        ) {
+            destinationObj = ul.obj;
+            dragDropIndicator.style.display = 'block';
+            dragDropIndicator.style.left = ul.left + 'px';
+            dragDropIndicator.style.top = ul.top + ul.height / 2 + 'px';
+            break;
+        }
+    }
+}
+
+/* End dragging and place the item in the destination */
+function dragDropEnd() {
+    dragTimer = -1;
+    dragContentObj.style.display = 'none';
+    if (destinationObj) {
+        var clonedItem = contentToBeDragged.cloneNode(true);
+        clonedItem.onmousedown = initDrag; // Re-enable dragging for the cloned item
+        destinationObj.appendChild(clonedItem);
+    }
+    contentToBeDragged = null;
+    destinationObj = null;
+    dragDropIndicator.style.display = 'none';
+}
 </script>
 </head>
 
